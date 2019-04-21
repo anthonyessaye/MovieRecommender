@@ -226,7 +226,7 @@ def ApplicationSubmit(moviename, count):
     return parser.parse_args() 
 
 
-def MyMain(moviename, count):
+def MyMain(moviename, count, minimumRating, userQuality, chosenAlgorithm, chosenMetric):
 
     # get args
     args = ApplicationSubmit(moviename, count)
@@ -241,8 +241,8 @@ def MyMain(moviename, count):
         os.path.join(data_path, ratings_filename))
 
     # set params
-    recommender.setFilterParams(50, 50)
-    recommender.setModalParams(20, 'auto', 'cosine', -1)
+    recommender.setFilterParams(minimumRating, userQuality)
+    recommender.setModalParams(20, chosenAlgorithm, chosenMetric, -1)
 
     # make recommendations
     rec = recommender.MakeRecommendations(movie_name, top_n)
