@@ -30,6 +30,7 @@ class KnnRecommender:
         self.movie_rating_thres = 0
         self.user_rating_thres = 0
         self.model = NearestNeighbors()
+        self.t0 = 0
 
     def setFilterParams(self, movie_rating_thres, user_rating_thres):
         """
@@ -42,6 +43,7 @@ class KnnRecommender:
         """
         self.movie_rating_thres = movie_rating_thres
         self.user_rating_thres = user_rating_thres
+        self.t0 = time.time()
 
     def setModalParams(self, n_neighbors, algorithm, metric, n_jobs=None):
         """
@@ -159,7 +161,7 @@ class KnnRecommender:
         # inference
         print('Recommendation system start to make inference')
         print('......\n')
-        t0 = time.time()
+
         distances, indices = model.kneighbors(
             data[idx],
             n_neighbors=n_recommendations+1)
@@ -174,8 +176,9 @@ class KnnRecommender:
                 ),
                 key=lambda x: x[1]
             )[:0:-1]
-        print('It took my system {:.2f}s to make inference \n\
-              '.format(time.time() - t0))
+        self.timeNeeded = 'It took {:.2f}s to finish \n\
+              '.format(time.time() - self.t0)
+
         # return recommendation (movieId, distance)
         return raw_recommends
 
@@ -202,14 +205,16 @@ class KnnRecommender:
         for i, (idx, dist) in enumerate(rawRecommends):
             print('{0}: {1}, with distance '
                   'of {2}'.format(n_recommendations - i, reverseHashmap[idx], dist))
-            recommendedStr = '{0}: {1}, with distance ''of {2}'.format(n_recommendations - i, reverseHashmap[idx], '%.3f'%dist) + "\n" + recommendedStr
+           # recommendedStr = '{0}: {1}, with distance ''of {2}'.format(n_recommendations - i, reverseHashmap[idx], '%.3f'%dist) + "\n" + recommendedStr
+            recommendedStr = '{0}: {1}'.format(n_recommendations - i, reverseHashmap[idx]) + "\n" + recommendedStr
 
-        return recommendedStr
+        return recommendedStr + '\n\n' + str(self.timeNeeded)
 
 
 # --------------------- Functions for GUI class will be written below here -----------------------
 def ApplicationSubmit(moviename, count):
     print(moviename)
+
     parser = argparse.ArgumentParser(
         prog="Movie Recommender",
         description="Run KNN Movie Recommender")
@@ -226,9 +231,11 @@ def ApplicationSubmit(moviename, count):
     return parser.parse_args() 
 
 
-def MyMain(moviename, count, minimumRating, userQuality, chosenAlgorithm, chosenMetric):
+def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
 
     # get args
+
+
     args = ApplicationSubmit(moviename, count)
     data_path = args.path
     movies_filename = args.movies_filename
@@ -242,10 +249,10 @@ def MyMain(moviename, count, minimumRating, userQuality, chosenAlgorithm, chosen
 
     # set params
     recommender.setFilterParams(minimumRating, userQuality)
-    recommender.setModalParams(20, chosenAlgorithm, chosenMetric, -1)
+    recommender.setModalParams(20, "auto", chosenMetric, -1)
 
     # make recommendations
-    rec = recommender.MakeRecommendations(movie_name, top_n)
+    rec = recommender.MakeRecommendations(movie_name, top_n) or "Something Went Wrong"
 
     return rec
 

@@ -1,6 +1,7 @@
 from tkinter import *
 import recommender
 from tkinter import messagebox
+import time
 
 # ----------- Declare UI Variables Here --------------------
 
@@ -38,20 +39,20 @@ quality_txt = Entry(window,width=15, font="14")
 quality_txt.grid(column=5, row=2)
 
 # Create a Tkinter variable ---------------
-algoVar = StringVar(window)
+#algoVar = StringVar(window)
 
-choices = { 'auto', 'ball_tree', 'kd_tree', 'brute'}
-algoVar.set('auto')
+#choices = { 'auto', 'ball_tree', 'kd_tree', 'brute'}
+#algoVar.set('auto')
 
-algorithmChosen = OptionMenu(window, algoVar, *choices)
-Label(window, text="Choose an algorithm", background="black", fg="white", font="16").grid(row = 4, column = 1)
-algorithmChosen.grid(row = 4, column =2 ,pady ="20")
-algorithmChosen.config(width= 14, font="14",background = "black", fg="white")
+#algorithmChosen = OptionMenu(window, algoVar, *choices)
+#Label(window, text="Choose an algorithm", background="black", fg="white", font="16").grid(row = 4, column = 1)
+#algorithmChosen.grid(row = 4, column =2 ,pady ="20")
+#algorithmChosen.config(width= 14, font="14",background = "black", fg="white")
 # ------------------------------------------
 
 metricVar = StringVar(window)
 
-metricChoices = {'cityblock', 'cosine', 'euclidean', 'l1', 'l2', 'manhattan','minkowski'}
+metricChoices = {'cityblock', 'cosine', 'euclidean', 'manhattan','minkowski'}
 metricVar.set('cosine')
 
 metricChosen = OptionMenu(window, metricVar, *metricChoices)
@@ -67,9 +68,12 @@ recommendedLbl.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 #Function for button click
 def onSubmitClicked():
+	recommendedLbl.config(text="Loading Suggestions")
+
+
 	# Pass variables to engine
 	recommended = recommender.MyMain(movie_txt.get(), int(count_txt.get()),
-									 int(rating_txt.get()),int(quality_txt.get()), algoVar.get(),metricVar.get())
+									 int(rating_txt.get()),int(quality_txt.get()),metricVar.get())
 
     #Splitting this maybe later we add a list
 	recommendedSplit = recommended.splitlines()
