@@ -75,7 +75,7 @@ def onSubmitClicked():
 	recommended = recommender.MyMain(movie_txt.get(), int(count_txt.get()),
 									 int(rating_txt.get()),int(quality_txt.get()),metricVar.get())
 
-    #Splitting this maybe later we add a list
+    # Splitting this maybe later we add a list
 	recommendedSplit = recommended.splitlines()
 
 	recommendedLbl.config(text = "Recommended Movies according to what you provided: \n\n" + recommended)
