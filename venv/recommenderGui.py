@@ -56,9 +56,9 @@ metricChoices = {'cityblock', 'cosine', 'euclidean', 'manhattan','minkowski'}
 metricVar.set('cosine')
 
 metricChosen = OptionMenu(window, metricVar, *metricChoices)
-Label(window, text="Choose a metric", background="black", fg="white", font="16").grid(row = 4, column = 4)
-metricChosen.grid(row = 4, column =5)
-metricChosen.config(width= 14, font="14",background = "black", fg="white")
+Label(window, text="Choose a metric", background="black", fg="white", font="16").grid(row = 3, column = 1, pady=20)
+metricChosen.grid(row = 3, column =2, pady=20)
+metricChosen.config(width= 12, font="14",background = "black", fg="white")
 
 # Recommended Label
 recommendedLbl = Label(window, text="", background="black", fg="white", font="14")

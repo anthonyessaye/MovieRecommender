@@ -163,7 +163,7 @@ class KnnClass:
         for i, (index, dist) in enumerate(rawRecommends):
             print('{0}: {1}, with distance '
                   'of {2}'.format(recommendations_count - i, reversed_hashmap[index], dist))
-           # recommended_movies = '{0}: {1}, with distance ''of {2}'.format(recommendations_count - i, reversed_hashmap[index], '%.3f'%dist) + "\n" + recommended_movies
+           
             recommended_movies = '{0}: {1}'.format(recommendations_count - i, reversed_hashmap[index]) + "\n" + recommended_movies
 
         return recommended_movies + '\n\n' + str(self.timeNeeded)
@@ -189,7 +189,7 @@ def ApplicationSubmit(moviename, count):
     return parser.parse_args() 
 
 
-def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
+def LoadArguments(moviename, count):
 
     # Get args and set the paths
     args = ApplicationSubmit(moviename, count)
@@ -203,6 +203,14 @@ def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
     recommender = KnnClass(
         os.path.join(data_path, movies_filename),
         os.path.join(data_path, ratings_filename))
+
+
+
+
+def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
+
+    # Load the arguments
+    LoadArguments(moviename, count)
 
     # Set filters and model
     recommender.SetFilterParams(minimumRating, userQuality)
