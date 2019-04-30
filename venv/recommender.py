@@ -189,7 +189,9 @@ def ApplicationSubmit(moviename, count):
     return parser.parse_args() 
 
 
-def LoadArguments(moviename, count):
+
+
+def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
 
     # Get args and set the paths
     args = ApplicationSubmit(moviename, count)
@@ -203,14 +205,6 @@ def LoadArguments(moviename, count):
     recommender = KnnClass(
         os.path.join(data_path, movies_filename),
         os.path.join(data_path, ratings_filename))
-
-
-
-
-def MyMain(moviename, count, minimumRating, userQuality, chosenMetric):
-
-    # Load the arguments
-    LoadArguments(moviename, count)
 
     # Set filters and model
     recommender.SetFilterParams(minimumRating, userQuality)
